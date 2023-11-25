@@ -1,0 +1,23 @@
+rmq:
+  host: 127.0.0.1
+  user: erksystem
+  password: erksystem.123
+  port: 10001
+  incoming-queue: ERK_TEST
+  outgoing-queue:
+    provision: ERK_PROVISION_QUEUE
+    api: ERK_API_QUEUE
+
+
+scenario:
+  steps:
+    - send; prov; /home/erksystem/simulator/resource/add_service_provider_info_rq_naver.json
+    - pause; 1000
+    - send; prov; /home/erksystem/simulator/resource/del_service_provider_info_rq.json
+    - pause; 1000
+    - send; prov; /home/erksystem/simulator/resource/add_user_info_req_naver.json
+    - pause; 1000
+    #- send; api; /home/erksystem/simulator/resource/erk_service_connn_req.json
+    #- pause; 1000
+    #- send; api; /home/erksystem/simulator/resource/erk_service_disconnn_req.json
+    #- pause; 1000
