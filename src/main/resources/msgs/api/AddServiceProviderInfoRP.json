@@ -1,0 +1,12 @@
+{
+  "AddServiceProviderInfoRP": {
+    "MsgType": "ErkMsgType_unknown",
+    "OrgName": "",
+    "ResultType": "OrgProfileResult_unknown",
+    "OrgId": 0,
+    "OrgPwd": "",
+    "ServiceDuration": "",
+    "UserNumber": 0,
+    "ServiceType": "ServiceType_unknown"
+  }
+}

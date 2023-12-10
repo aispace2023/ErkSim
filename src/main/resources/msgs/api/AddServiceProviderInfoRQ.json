@@ -1,0 +1,10 @@
+{
+  "AddServiceProviderInfoRQ": {
+    "MsgType": "ErkMsgType_unknown",
+    "OrgName": "",
+    "OrgPwd": "",
+    "ServiceDuration": "",
+    "UserNumber": 0,
+    "ServiceType": "ServiceType_unknown"
+  }
+}

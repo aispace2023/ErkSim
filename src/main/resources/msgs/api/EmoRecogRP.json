@@ -1,0 +1,8 @@
+{
+  "EmoRecogRP": {
+    "ReturnCode": "ReturnCode_unknown",
+    "EmoRecogTime": "0",
+    "Emotion": "EmotionType_unknown",
+    "Accuracy": 0.0
+  }
+}

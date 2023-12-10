@@ -1,0 +1,19 @@
+{
+  "UpdateUserInfoRQ": {
+    "MsgType": "ErkMsgType_unknown",
+    "OrgName": "",
+    "UserName": "",
+    "OldUserPwd": "",
+    "OldServiceDuration": "",
+    "OldAge": 0,
+    "OldSex": 0,
+    "OldUserType": 0,
+    "OldServiceType": "ServiceType_unknown",
+    "NewUserPwd": "",
+    "NewServiceDuration": "",
+    "NewAge": 0,
+    "NewSex": 0,
+    "NewUserType": 0,
+    "NewServiceType": "ServiceType_unknown"
+  }
+}

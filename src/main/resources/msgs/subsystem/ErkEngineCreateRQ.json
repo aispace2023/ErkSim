@@ -1,0 +1,14 @@
+{
+  "ErkEngineCreateRQ": {
+    "MsgTime": "0",
+    "ServiceType": "ServiceType_unknown",
+    "PhysioEngineReceiveQueueName": "",
+    "PhysioEngineSendQueueName": "",
+    "SpeechEngineReceiveQueueName": "",
+    "SpeechEngineSendQueueName": "",
+    "FaceEngineReceiveQueueName": "",
+    "FaceEngineSendQueueName": "",
+    "KnowledgeEngineReceiveQueueName": "",
+    "KnowledgeEngineSendQueueName": ""
+  }
+}

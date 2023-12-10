@@ -1,0 +1,8 @@
+{
+  "DelUserInfoRQ": {
+    "MsgType": "ErkMsgType_unknown",
+    "OrgName": "",
+    "UserName": "",
+    "UserPwd": ""
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "UpdateServiceProviderInfoRP": {
+    "MsgType": "ErkMsgType_unknown",
+    "OrgName": "",
+    "ResultType": "OrgProfileResult_unknown",
+    "OldOrgPwd": "",
+    "OldServiceDuration": "",
+    "OldUserNumber": 0,
+    "OldServiceType": "ServiceType_unknown",
+    "NewOrgPwd": "",
+    "NewServiceDuration": "",
+    "NewUserNumber": 0,
+    "NewServiceType": "ServiceType_unknown"
+  }
+}

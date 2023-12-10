@@ -1,0 +1,15 @@
+{
+  "AddUserInfoRP": {
+    "MsgType": "ErkMsgType_unknown",
+    "OrgName": "",
+    "UserName": "",
+    "ResultType": "UserProfileResult_unknown",
+    "UserId": 0,
+    "UserPwd": "",
+    "ServiceDuration": "",
+    "Age": 0,
+    "Sex": 0,
+    "UserType": 0,
+    "ServiceType": "ServiceType_unknown"
+  }
+}
