@@ -1,0 +1,20 @@
+rmq:
+  host: 129.254.221.95
+  user: erksystem
+  password: erksystem.123
+  port: 10001
+  incoming-queue:
+    api: API_QUEUE
+    subsystem: SUBSYSTEM_QUEUE
+  outgoing-queue:
+    api: ERK_API_QUEUE
+    subsystem: ERK_SUBSYSTEM_QUEUE
+
+scenario:
+  steps:
+    - send; api; /Users/heokangmoo/dev/Java/aispace/erksim/src/main/resources/msgs/api/AddServiceProviderInfoRQ.json
+    - pause; 1000
+    - send; api; /Users/heokangmoo/dev/Java/aispace/erksim/src/main/resources/msgs/api/DelServiceProviderInfoRQ.json
+    - pause; 1000
+    - send; subsystem; /Users/heokangmoo/dev/Java/aispace/erksim/src/main/resources/msgs/subsystem/ErkEngineCreateRP.json
+    - pause; 6000

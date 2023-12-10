@@ -24,12 +24,14 @@ public class UserConfig extends YamlConfig {
     String rmqPassword;
     @ConfigValue("rmq.port")
     int rmqPort;
-    @ConfigValue("rmq.incoming-queue")
-    String rmqIncomingQueue;
-    @ConfigValue("rmq.outgoing-queue.provision")
-    String rmqOutgoingQueueProvision;
+    @ConfigValue("rmq.incoming-queue.api")
+    String rmqIncomingQueueApi;
+    @ConfigValue("rmq.incoming-queue.subsystem")
+    String rmqIncomingQueueSubsystem;
     @ConfigValue("rmq.outgoing-queue.api")
     String rmqOutgoingQueueApi;
+    @ConfigValue("rmq.outgoing-queue.subsystem")
+    String rmqOutgoingQueueSubsystem;
 
     @ConfigValue("scenario.steps")
     List<String> stepsStrs;
@@ -42,15 +44,15 @@ public class UserConfig extends YamlConfig {
                 .map(o -> {
                     try {
                         String command = o[0].trim();
-                        String argument = o[1].trim();
+                        String[] arguments = o[1].trim().split(";");
 
                         return switch (command) {
-                            case "send" -> new SendStep(argument);
-                            case "pause" -> new PauseStep(argument);
+                            case "send" -> new SendStep(arguments);
+                            case "pause" -> new PauseStep(arguments);
                             default -> null;
                         };
                     } catch (Exception e) {
-                        return null;
+                        throw new RuntimeException(e);
                     }
                 })
                 .filter(Objects::nonNull)

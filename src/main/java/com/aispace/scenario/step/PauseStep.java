@@ -11,6 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 public class PauseStep implements Step {
     int timeMs;
 
+
+    public PauseStep(String[] arguments) {
+        this(arguments[0].trim());
+    }
+
     public PauseStep(String timeMs) {
         this(Integer.parseInt(timeMs));
     }

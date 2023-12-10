@@ -1,7 +1,7 @@
 package com.aispace.rmq;
 
 import com.erksystem.protobuf.api.ErkApiMsg;
-import com.erksystem.protobuf.prov.ErkProvMsg_m;
+import com.erksystem.protobuf.api.ErkInterApiMsg;
 import com.google.protobuf.Message;
 import com.google.protobuf.Struct;
 import com.google.protobuf.util.JsonFormat;
@@ -36,21 +36,12 @@ public class RmqLogPrinter {
             return Optional.of(builder.build());
         } catch (Exception e){
             try {
-                ErkProvMsg_m.Builder builder = ErkProvMsg_m.newBuilder();
+                ErkInterApiMsg.Builder builder = ErkInterApiMsg.newBuilder();
                 JsonFormat.parser().merge(json, builder);
                 return Optional.of(builder.build());
             } catch (Exception e2){
                 return Optional.empty();
             }
         }
-
-//
-//        try {
-//            Struct.Builder structBuilder = Struct.newBuilder();
-//            JsonFormat.parser().ignoringUnknownFields().merge(json, structBuilder);
-//            return Optional.of(structBuilder.build());
-//        } catch (Exception e){
-//            return Optional.empty();
-//        }
     }
 }
