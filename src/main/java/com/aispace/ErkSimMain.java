@@ -6,7 +6,6 @@ import com.aispace.rmq.RmqStreamModule;
 import com.aispace.scenario.step.Step;
 import com.aispace.service.AppInstance;
 import com.erksystem.protobuf.api.ErkApiMsg;
-import com.erksystem.protobuf.api.ErkInterApiMsg;
 import com.google.protobuf.Message;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +49,7 @@ public class ErkSimMain {
 
             rmqStreamModule.registerByteConsumer(userConfig.getRmqIncomingQueueSubsystem(), msg -> {
                 try {
-                    Message protoMsg = ErkInterApiMsg.parseFrom(msg);
+                    Message protoMsg = ErkApiMsg.parseFrom(msg);
                     String jsonMsg = RmqLogPrinter.proto2Json(protoMsg).orElse(null);
                     log.info("[RMQ MESSAGE] ERK_SIM <-- ERK_SYSTEM [{}]", jsonMsg);
                 } catch (Exception e){
