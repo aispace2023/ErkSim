@@ -26,8 +26,14 @@ public class UserConfig extends YamlConfig {
     int rmqPort;
     @ConfigValue("rmq.incoming-queue.api")
     String rmqIncomingQueueApi;
-    @ConfigValue("rmq.incoming-queue.subsystem")
-    String rmqIncomingQueueSubsystem;
+    @ConfigValue("rmq.incoming-queue.per-queue")
+    String rmqIncomingPerQueue;
+    @ConfigValue("rmq.incoming-queue.ser-queue")
+    String rmqIncomingSerQueue;
+    @ConfigValue("rmq.incoming-queue.fer-queue")
+    String rmqIncomingFerQueue;
+    @ConfigValue("rmq.incoming-queue.ekm-queue")
+    String rmqIncomingEkmQueue;
     @ConfigValue("rmq.outgoing-queue.api")
     String rmqOutgoingQueueApi;
     @ConfigValue("rmq.outgoing-queue.subsystem")

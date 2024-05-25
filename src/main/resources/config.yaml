@@ -5,7 +5,10 @@ rmq:
   port: 10001
   incoming-queue:
     api: API_QUEUE
-    subsystem: SUBSYSTEM_QUEUE
+    per-queue: PER_QUEUE
+    ser-queue: SER_QUEUE
+    fer-queue: FER_QUEUE
+    ekm-queue: EKM_QUEUE
   outgoing-queue:
     api: ERK_API_QUEUE
     subsystem: ERK_SUBSYSTEM_QUEUE

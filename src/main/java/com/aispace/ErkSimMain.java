@@ -10,6 +10,7 @@ import com.google.protobuf.Message;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class ErkSimMain {
     private static final AppInstance appInstance = AppInstance.getInstance();
+
     public static void main(String[] args) throws IOException, NoSuchFieldException, TimeoutException {
         try {
             UserConfig userConfig = appInstance.getUserConfig();
@@ -26,37 +28,33 @@ public class ErkSimMain {
             RmqStreamModule rmqStreamModule = new RmqStreamModule(userConfig.getRmqHost(), userConfig.getRmqUser(), userConfig.getRmqPassword(), userConfig.getRmqPort());
             appInstance.setRmqStreamModule(rmqStreamModule);
             rmqStreamModule.connect(() -> log.info("RMQ Connected!"), () -> log.warn("RMQ Disconnected!"));
-            try {
-                rmqStreamModule.queueDeclare(userConfig.getRmqIncomingQueueApi());
-            } catch (Exception e){
 
-            }
-            try {
-                rmqStreamModule.queueDeclare(userConfig.getRmqIncomingQueueSubsystem());
-            } catch (Exception e){
-
-            }
-
-            rmqStreamModule.registerByteConsumer(userConfig.getRmqIncomingQueueApi(), msg -> {
+            List<String> rmqIncomingQueues = List.of(
+                    userConfig.getRmqIncomingQueueApi(),
+                    userConfig.getRmqIncomingPerQueue(),
+                    userConfig.getRmqIncomingSerQueue(),
+                    userConfig.getRmqIncomingFerQueue(),
+                    userConfig.getRmqIncomingEkmQueue());
+            for (String rmqIncomingQueue : rmqIncomingQueues) {
                 try {
-                    Message protoMsg = ErkApiMsg.parseFrom(msg);
-                    String jsonMsg = RmqLogPrinter.proto2Json(protoMsg).orElse(null);
-                    log.info("[RMQ MESSAGE] ERK_SIM <-- ERK_SYSTEM [{}]", jsonMsg);
-                } catch (Exception e){
-                    log.warn("Err Occurs", e);
+                    rmqStreamModule.queueDeclare(rmqIncomingQueue);
+                } catch (Exception e) {
+                    // ignore
                 }
-            });
+            }
 
-            rmqStreamModule.registerByteConsumer(userConfig.getRmqIncomingQueueSubsystem(), msg -> {
-                try {
-                    Message protoMsg = ErkApiMsg.parseFrom(msg);
-                    String jsonMsg = RmqLogPrinter.proto2Json(protoMsg).orElse(null);
-                    log.info("[RMQ MESSAGE] ERK_SIM <-- ERK_SYSTEM [{}]", jsonMsg);
-                } catch (Exception e){
-                    log.warn("Err Occurs", e);
-                }
-            });
+            for (String rmqIncomingQueue : rmqIncomingQueues) {
+                rmqStreamModule.registerByteConsumer(rmqIncomingQueue, msg -> {
+                    try {
+                        Message protoMsg = ErkApiMsg.parseFrom(msg);
+                        String jsonMsg = RmqLogPrinter.proto2Json(protoMsg).orElse(null);
+                        log.info("[RMQ MESSAGE] ERK_SIM({}) <-- ERK_SYSTEM [{}]", rmqIncomingQueue, jsonMsg);
+                    } catch (Exception e) {
+                        log.warn("Err Occurs", e);
+                    }
 
+                });
+            }
             for (Step step : userConfig.getSteps()) {
                 step.action();
             }
