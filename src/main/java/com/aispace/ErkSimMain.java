@@ -2,7 +2,7 @@ package com.aispace;
 
 import com.aispace.config.UserConfig;
 import com.aispace.rmq.RmqLogPrinter;
-import com.aispace.rmq.RmqStreamModule;
+import com.aispace.rmq.RmqModule;
 import com.aispace.scenario.step.Step;
 import com.aispace.service.AppInstance;
 import com.erksystem.protobuf.api.ErkApiMsg;
@@ -25,8 +25,8 @@ public class ErkSimMain {
             UserConfig userConfig = appInstance.getUserConfig();
             userConfig.init(args[0]);
 
-            RmqStreamModule rmqStreamModule = new RmqStreamModule(userConfig.getRmqHost(), userConfig.getRmqUser(), userConfig.getRmqPassword(), userConfig.getRmqPort());
-            appInstance.setRmqStreamModule(rmqStreamModule);
+            RmqModule rmqStreamModule = new RmqModule(userConfig.getRmqHost(), userConfig.getRmqUser(), userConfig.getRmqPassword(), userConfig.getRmqPort(), 64);
+            appInstance.setRmqModule(rmqStreamModule);
             rmqStreamModule.connect(() -> log.info("RMQ Connected!"), () -> log.warn("RMQ Disconnected!"));
 
             List<String> rmqIncomingQueues = List.of(
@@ -44,7 +44,7 @@ public class ErkSimMain {
             }
 
             for (String rmqIncomingQueue : rmqIncomingQueues) {
-                rmqStreamModule.registerByteConsumer(rmqIncomingQueue, msg -> {
+                rmqStreamModule.registerConsumer(rmqIncomingQueue, msg -> {
                     try {
                         Message protoMsg = ErkApiMsg.parseFrom(msg);
                         String jsonMsg = RmqLogPrinter.proto2Json(protoMsg).orElse(null);

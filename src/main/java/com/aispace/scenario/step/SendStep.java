@@ -46,7 +46,7 @@ public class SendStep implements Step {
         try {
             Message message = fromJson(jsonMsg).orElseThrow();
 
-            appInstance.getRmqStreamModule().sendMessage(targetQueue, message.toByteArray());
+            appInstance.getRmqModule().sendMessage(targetQueue, message.toByteArray());
 
             log.info("[RMQ MESSAGE] ERK_SIM --> ERK_SYSTEM({}) [{}]", targetQueue, jsonMsg);
         } catch (Exception e) {

@@ -1,7 +1,7 @@
 package com.aispace.service;
 
 import com.aispace.config.UserConfig;
-import com.aispace.rmq.RmqStreamModule;
+import com.aispace.rmq.RmqModule;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class AppInstance {
     UserConfig userConfig = new UserConfig();
-    RmqStreamModule rmqStreamModule;
+    RmqModule rmqModule;
 
     private AppInstance() {
     }
