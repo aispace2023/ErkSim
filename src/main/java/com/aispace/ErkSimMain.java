@@ -5,6 +5,7 @@ import com.aispace.rmq.RmqLogPrinter;
 import com.aispace.rmq.RmqModule;
 import com.aispace.scenario.step.Step;
 import com.aispace.service.AppInstance;
+import com.aispace.service.RecvMsgUtil;
 import com.erksystem.protobuf.api.ErkApiMsg;
 import com.google.protobuf.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +20,15 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class ErkSimMain {
     private static final AppInstance appInstance = AppInstance.getInstance();
-
+    private static final RecvMsgUtil recvMsgUtil = RecvMsgUtil.getInstance();
     public static void main(String[] args) throws IOException, NoSuchFieldException, TimeoutException {
         try {
             UserConfig userConfig = appInstance.getUserConfig();
             userConfig.init(args[0]);
 
-            RmqModule rmqStreamModule = new RmqModule(userConfig.getRmqHost(), userConfig.getRmqUser(), userConfig.getRmqPassword(), userConfig.getRmqPort(), 64);
-            appInstance.setRmqModule(rmqStreamModule);
-            rmqStreamModule.connect(() -> log.info("RMQ Connected!"), () -> log.warn("RMQ Disconnected!"));
+            RmqModule rmqModule = new RmqModule(userConfig.getRmqHost(), userConfig.getRmqUser(), userConfig.getRmqPassword(), userConfig.getRmqPort(), 64);
+            appInstance.setRmqModule(rmqModule);
+            rmqModule.connect(() -> log.info("RMQ Connected!"), () -> log.warn("RMQ Disconnected!"));
 
             List<String> rmqIncomingQueues = List.of(
                     userConfig.getRmqIncomingQueueApi(),
@@ -37,17 +38,19 @@ public class ErkSimMain {
                     userConfig.getRmqIncomingEkmQueue());
             for (String rmqIncomingQueue : rmqIncomingQueues) {
                 try {
-                    rmqStreamModule.queueDeclare(rmqIncomingQueue);
+                    rmqModule.queueDeclare(rmqIncomingQueue);
                 } catch (Exception e) {
                     // ignore
                 }
             }
 
             for (String rmqIncomingQueue : rmqIncomingQueues) {
-                rmqStreamModule.registerConsumer(rmqIncomingQueue, msg -> {
+                rmqModule.registerConsumer(rmqIncomingQueue, msg -> {
                     try {
                         Message protoMsg = ErkApiMsg.parseFrom(msg);
                         String jsonMsg = RmqLogPrinter.proto2Json(protoMsg).orElse(null);
+
+                        recvMsgUtil.setRecentRecvMsg(jsonMsg);
                         log.info("[RMQ MESSAGE] ERK_SIM({}) <-- ERK_SYSTEM [{}]", rmqIncomingQueue, jsonMsg);
                     } catch (Exception e) {
                         log.warn("Err Occurs", e);
@@ -58,7 +61,7 @@ public class ErkSimMain {
             for (Step step : userConfig.getSteps()) {
                 step.action();
             }
-            rmqStreamModule.close();
+            rmqModule.close();
         } catch (Exception e) {
             log.error("Err Occurs", e);
             throw e;
